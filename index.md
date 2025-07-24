@@ -34,7 +34,7 @@ layout: default
   
   {% if site.assets.size > 6 %}
     <div style="text-align: center; margin-top: 2rem;">
-      <a href="/assets/" class="btn">View All Assets</a>
+      <a href="{{ "/assets/" | relative_url }}" class="btn">View All Assets</a>
     </div>
   {% endif %}
 </section>
