@@ -12,7 +12,7 @@ layout: default
   <h2 class="section-title">Featured Resources</h2>
   
   <div class="assets-grid">
-    <!-- Sample resources from /resources directory -->
+    <!-- Auto-generated featured resource -->
     <div class="asset-card">
       <h3><a href="{{ "/resources/font/times.ttf" | relative_url }}" target="_blank">Times Font</a></h3>
       <div class="asset-meta">
