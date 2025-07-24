@@ -5,36 +5,36 @@ layout: default
 <div class="hero">
   <h1>{{ site.title }}</h1>
   <p>{{ site.description }}</p>
-  <a href="#assets" class="btn">Browse Assets</a>
+  <a href="#resources" class="btn">Browse Resources</a>
 </div>
 
-<section id="assets">
-  <h2 class="section-title">Featured Assets</h2>
+<section id="resources">
+  <h2 class="section-title">Featured Resources</h2>
   
   <div class="assets-grid">
-    {% for asset in site.assets limit:6 %}
+    {% for resource in site.resources limit:6 %}
       <div class="asset-card">
-        <h3><a href="{{ asset.url }}">{{ asset.title }}</a></h3>
+        <h3><a href="{{ resource.url }}">{{ resource.title }}</a></h3>
         <div class="asset-meta">
-          <span class="file-type">{{ asset.file_type | upcase }}</span>
-          <span>{{ asset.file_size }}</span>
+          <span class="file-type">{{ resource.file_type | upcase }}</span>
+          <span>{{ resource.file_size }}</span>
         </div>
-        {% if asset.description %}
-          <p class="asset-description">{{ asset.description | truncate: 100 }}</p>
+        {% if resource.description %}
+          <p class="asset-description">{{ resource.description | truncate: 100 }}</p>
         {% endif %}
         <div class="asset-actions">
-          <a href="{{ asset.url }}" class="btn">View Details</a>
-          {% if asset.file_url %}
-            <a href="{{ asset.file_url }}" class="btn btn-danger" download>Download</a>
+          <a href="{{ resource.url }}" class="btn">View Details</a>
+          {% if resource.file_url %}
+            <a href="{{ resource.file_url }}" class="btn btn-danger" download>Download</a>
           {% endif %}
         </div>
       </div>
     {% endfor %}
   </div>
   
-  {% if site.assets.size > 6 %}
+  {% if site.resources.size > 6 %}
     <div style="text-align: center; margin-top: 2rem;">
-      <a href="{{ "/assets/" | relative_url }}" class="btn">View All Assets</a>
+      <a href="{{ "/resources/" | relative_url }}" class="btn">View All Resources</a>
     </div>
   {% endif %}
 </section>

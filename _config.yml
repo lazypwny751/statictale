@@ -9,16 +9,16 @@ plugins:
   - jekyll-feed
 
 collections:
-  assets:
+  resources:
     output: true
     permalink: /:collection/:name/
 
 defaults:
   - scope:
       path: ""
-      type: "assets"
+      type: "resources"
     values:
-      layout: "asset"
+      layout: "resource"
 
 exclude:
   - Gemfile
