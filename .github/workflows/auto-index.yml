@@ -1,0 +1,138 @@
+name: Auto-Index Resources
+
+on:
+  push:
+    branches: [ main ]
+    paths: [ 'resources/**' ]
+  workflow_dispatch:
+
+jobs:
+  update-index:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Auto-generate resources index
+      run: |
+        cat > resources.md << 'EOF'
+        ---
+        layout: default
+        title: Resources
+        permalink: /resources/
+        ---
+
+        <div style="text-align: center; margin-bottom: 3rem;">
+          <h1 class="section-title">Resource Library</h1>
+          <p style="color: var(--secondary);">Browse and download shared resources and files.</p>
+        </div>
+
+        <div class="assets-grid">
+        EOF
+        
+        # Find all files in resources directory (excluding README.md)
+        find resources/ -type f ! -name "README.md" | sort | while IFS= read -r file; do
+          # Get file info
+          filename=$(basename "$file")
+          dirname=$(dirname "$file" | sed 's|resources/||')
+          extension="${filename##*.}"
+          size=$(du -h "$file" | cut -f1)
+          
+          # Convert extension to uppercase
+          ext_upper=$(echo "$extension" | tr '[:lower:]' '[:upper:]')
+          
+          # Generate card HTML
+          cat >> resources.md << EOF
+          <div class="asset-card">
+            <h3><a href="{{ "/$file" | relative_url }}" target="_blank">$filename</a></h3>
+            <div class="asset-meta">
+              <span class="file-type">$ext_upper</span>
+              <span>$size</span>
+              <span>$(echo "$dirname" | tr '[:lower:]' '[:upper:]')</span>
+            </div>
+            <p class="asset-description">$ext_upper file in $dirname category. Click to download or view.</p>
+            <div class="asset-actions">
+              <a href="{{ "/$file" | relative_url }}" class="btn" target="_blank">👁 View</a>
+              <a href="{{ "/$file" | relative_url }}" class="btn btn-danger" download>⬇ Download</a>
+            </div>
+          </div>
+        EOF
+        done
+        
+        # Close the grid and add categories
+        cat >> resources.md << 'EOF'
+        </div>
+
+        <div style="margin-top: 3rem;">
+          <h2 class="section-title">Resource Categories</h2>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 2rem;">
+            
+            <div style="text-align: center; padding: 2rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px;">
+              <div style="font-size: 2rem; margin-bottom: 1rem;">🔤</div>
+              <h3 style="color: var(--primary); margin-bottom: 1rem;">Fonts</h3>
+              <p style="color: var(--secondary); margin-bottom: 1rem;">Typography resources</p>
+              <a href="{{ "/resources/font/" | relative_url }}" class="btn">Browse Fonts</a>
+            </div>
+            
+            <div style="text-align: center; padding: 2rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px;">
+              <div style="font-size: 2rem; margin-bottom: 1rem;">🖼️</div>
+              <h3 style="color: var(--primary); margin-bottom: 1rem;">Images</h3>
+              <p style="color: var(--secondary); margin-bottom: 1rem;">Graphics and photos</p>
+              <a href="{{ "/resources/images/" | relative_url }}" class="btn">Browse Images</a>
+            </div>
+            
+            <div style="text-align: center; padding: 2rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px;">
+              <div style="font-size: 2rem; margin-bottom: 1rem;">🛠️</div>
+              <h3 style="color: var(--primary); margin-bottom: 1rem;">Tools</h3>
+              <p style="color: var(--secondary); margin-bottom: 1rem;">Utilities and software</p>
+              <a href="{{ "/resources/tools/" | relative_url }}" class="btn">Browse Tools</a>
+            </div>
+            
+          </div>
+        </div>
+
+        <script>
+        // Auto-generated resource index - updated automatically
+        console.log('Resource library auto-generated on: ' + new Date().toISOString());
+        </script>
+        EOF
+    
+    - name: Update index.md with latest resource
+      run: |
+        # Get the latest file for featured section
+        latest_file=$(find resources/ -type f ! -name "README.md" | head -1)
+        if [ -n "$latest_file" ]; then
+          filename=$(basename "$latest_file")
+          extension="${filename##*.}"
+          ext_upper=$(echo "$extension" | tr '[:lower:]' '[:upper:]')
+          size=$(du -h "$latest_file" | cut -f1)
+          
+          # Update index.md featured section
+          sed -i '/<!-- Sample resources from \/resources directory -->/,/<\/div>/c\
+          <!-- Auto-generated featured resource -->\
+          <div class="asset-card">\
+            <h3><a href="{{ "/'$latest_file'" | relative_url }}" target="_blank">'$filename'</a></h3>\
+            <div class="asset-meta">\
+              <span class="file-type">'$ext_upper'</span>\
+              <span>'$size'</span>\
+            </div>\
+            <p class="asset-description">Latest '$ext_upper' file available for download.</p>\
+            <div class="asset-actions">\
+              <a href="{{ "/'$latest_file'" | relative_url }}" class="btn" target="_blank">View</a>\
+              <a href="{{ "/'$latest_file'" | relative_url }}" class="btn btn-danger" download>Download</a>\
+            </div>\
+          </div>' index.md
+        fi
+    
+    - name: Commit changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add resources.md index.md
+        if git diff --staged --quiet; then
+          echo "No changes to commit"
+        else
+          git commit -m "Auto-update resource index [skip ci]"
+          git push
+        fi
