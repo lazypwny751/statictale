@@ -12,31 +12,24 @@ layout: default
   <h2 class="section-title">Featured Resources</h2>
   
   <div class="assets-grid">
-    {% for resource in site.resources limit:6 %}
-      <div class="asset-card">
-        <h3><a href="{{ resource.url }}">{{ resource.title }}</a></h3>
-        <div class="asset-meta">
-          <span class="file-type">{{ resource.file_type | upcase }}</span>
-          <span>{{ resource.file_size }}</span>
-        </div>
-        {% if resource.description %}
-          <p class="asset-description">{{ resource.description | truncate: 100 }}</p>
-        {% endif %}
-        <div class="asset-actions">
-          <a href="{{ resource.url }}" class="btn">View Details</a>
-          {% if resource.file_url %}
-            <a href="{{ resource.file_url }}" class="btn btn-danger" download>Download</a>
-          {% endif %}
-        </div>
+    <!-- Sample resources from /resources directory -->
+    <div class="asset-card">
+      <h3><a href="{{ "/resources/font/times.ttf" | relative_url }}" target="_blank">Times Font</a></h3>
+      <div class="asset-meta">
+        <span class="file-type">TTF</span>
+        <span>~500 KB</span>
       </div>
-    {% endfor %}
+      <p class="asset-description">Classic Times New Roman font file for professional typography.</p>
+      <div class="asset-actions">
+        <a href="{{ "/resources/font/times.ttf" | relative_url }}" class="btn" target="_blank">View</a>
+        <a href="{{ "/resources/font/times.ttf" | relative_url }}" class="btn btn-danger" download>Download</a>
+      </div>
+    </div>
   </div>
   
-  {% if site.resources.size > 6 %}
-    <div style="text-align: center; margin-top: 2rem;">
-      <a href="{{ "/resources/" | relative_url }}" class="btn">View All Resources</a>
-    </div>
-  {% endif %}
+  <div style="text-align: center; margin-top: 2rem;">
+    <a href="{{ "/resources/" | relative_url }}" class="btn">View All Resources</a>
+  </div>
 </section>
 
 <section style="margin-top: 4rem; text-align: center;">

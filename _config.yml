@@ -8,18 +8,6 @@ highlighter: rouge
 plugins:
   - jekyll-feed
 
-collections:
-  resources:
-    output: true
-    permalink: /:collection/:name/
-
-defaults:
-  - scope:
-      path: ""
-      type: "resources"
-    values:
-      layout: "resource"
-
 exclude:
   - Gemfile
   - Gemfile.lock
