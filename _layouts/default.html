@@ -10,11 +10,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #ffff00;
-      --accent: #ff6b6b;
+      --primary: #f5f5dc;      /* Bej renk */
+      --secondary: #e6e6e6;    /* Açık gri */
+      --accent: #d4b8a3;       /* Daha koyu bej */
       --bg: #000000;
       --text: #ffffff;
       --border: #333333;
+      --hover: #444444;
     }
     
     * {
@@ -47,18 +49,17 @@
       position: absolute;
       background: white;
       border-radius: 50%;
-      animation: twinkle 3s infinite alternate;
+      animation: twinkle 4s infinite alternate ease-in-out;
     }
     
     @keyframes twinkle {
-      0% { opacity: 0.3; transform: scale(0.8); }
-      50% { opacity: 1; transform: scale(1.2); }
-      100% { opacity: 0.5; transform: scale(0.9); }
+      0% { opacity: 0.4; }
+      100% { opacity: 0.9; }
     }
     
     header {
       background: rgba(0,0,0,0.9);
-      border-bottom: 2px solid var(--border);
+      border-bottom: 1px solid var(--border);
       padding: 1rem 0;
       position: sticky;
       top: 0;
@@ -80,17 +81,14 @@
     
     .logo {
       font-family: 'Press Start 2P', monospace;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       color: var(--primary);
       text-decoration: none;
-      text-shadow: 2px 2px 0px var(--accent);
-      transition: all 0.3s ease;
+      transition: color 0.3s ease;
     }
     
     .logo:hover {
       color: var(--accent);
-      text-shadow: 2px 2px 0px var(--primary);
-      transform: scale(1.05);
     }
     
     nav a {
@@ -100,12 +98,13 @@
       padding: 0.5rem 1rem;
       border: 1px solid transparent;
       transition: all 0.3s ease;
+      border-radius: 4px;
     }
     
     nav a:hover {
       color: var(--primary);
-      border: 1px solid var(--primary);
-      background: rgba(255, 255, 0, 0.1);
+      border: 1px solid var(--border);
+      background: rgba(245, 245, 220, 0.1);
     }
     
     main {
@@ -115,47 +114,41 @@
     
     .hero {
       text-align: center;
-      padding: 4rem 0;
+      padding: 3rem 0;
       margin-bottom: 3rem;
     }
     
     .hero h1 {
       font-family: 'Press Start 2P', monospace;
-      font-size: 2.5rem;
+      font-size: 2.2rem;
       color: var(--primary);
-      text-shadow: 3px 3px 0px var(--accent);
       margin-bottom: 1rem;
-      animation: float 3s ease-in-out infinite;
-    }
-    
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
     }
     
     .hero p {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       margin-bottom: 2rem;
       opacity: 0.9;
+      color: var(--secondary);
     }
     
     .btn {
       display: inline-block;
       padding: 0.75rem 1.5rem;
       background: transparent;
-      border: 2px solid var(--primary);
+      border: 1px solid var(--primary);
       color: var(--primary);
       text-decoration: none;
       font-family: 'VT323', monospace;
       font-size: 1rem;
       transition: all 0.3s ease;
       margin: 0.5rem;
+      border-radius: 4px;
     }
     
     .btn:hover {
       background: var(--primary);
       color: var(--bg);
-      transform: scale(1.05);
     }
     
     .btn-danger {
@@ -171,13 +164,13 @@
     .assets-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 2rem;
+      gap: 1.5rem;
       margin-top: 2rem;
     }
     
     .asset-card {
       background: rgba(255, 255, 255, 0.05);
-      border: 2px solid var(--border);
+      border: 1px solid var(--border);
       border-radius: 8px;
       padding: 1.5rem;
       transition: all 0.3s ease;
@@ -186,14 +179,14 @@
     
     .asset-card:hover {
       border-color: var(--primary);
-      background: rgba(255, 255, 0, 0.1);
-      transform: translateY(-5px);
-      box-shadow: 0 5px 20px rgba(255, 255, 0, 0.3);
+      background: rgba(245, 245, 220, 0.08);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(245, 245, 220, 0.2);
     }
     
     .asset-card h3 {
       font-family: 'Press Start 2P', monospace;
-      font-size: 1rem;
+      font-size: 0.9rem;
       color: var(--primary);
       margin-bottom: 1rem;
     }
@@ -212,7 +205,7 @@
     }
     
     .file-type {
-      background: var(--primary);
+      background: var(--accent);
       color: var(--bg);
       padding: 0.2rem 0.5rem;
       font-size: 0.8rem;
@@ -223,11 +216,13 @@
     .asset-description {
       margin-bottom: 1.5rem;
       line-height: 1.4;
+      color: var(--secondary);
     }
     
     .asset-actions {
       display: flex;
-      gap: 1rem;
+      gap: 0.5rem;
+      flex-wrap: wrap;
     }
     
     .asset-page {
@@ -236,7 +231,7 @@
       padding: 2rem;
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 8px;
       backdrop-filter: blur(10px);
     }
     
@@ -249,7 +244,7 @@
     
     .asset-title {
       font-family: 'Press Start 2P', monospace;
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       color: var(--primary);
       margin-bottom: 1rem;
     }
@@ -302,7 +297,7 @@
     
     footer {
       background: rgba(0, 0, 0, 0.9);
-      border-top: 2px solid var(--border);
+      border-top: 1px solid var(--border);
       padding: 2rem 0;
       margin-top: 4rem;
       text-align: center;
@@ -318,11 +313,20 @@
       font-family: 'Press Start 2P', monospace;
       color: var(--primary);
       margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+    
+    .section-title {
+      font-family: 'Press Start 2P', monospace;
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 1.2rem;
     }
     
     @media (max-width: 768px) {
       .hero h1 {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
       }
       
       .assets-grid {
@@ -340,6 +344,10 @@
       .header-content {
         flex-direction: column;
         gap: 1rem;
+      }
+      
+      .asset-actions {
+        justify-content: center;
       }
     }
   </style>
@@ -382,19 +390,19 @@
   </footer>
 
   <script>
-    // Starfield Animation
+    // Simple Starfield Animation
     document.addEventListener('DOMContentLoaded', function() {
       const starfield = document.getElementById('starfield');
-      const numStars = 100;
+      const numStars = 80;
       
       for (let i = 0; i < numStars; i++) {
         const star = document.createElement('div');
         star.className = 'star';
         star.style.left = Math.random() * 100 + '%';
         star.style.top = Math.random() * 100 + '%';
-        star.style.width = star.style.height = Math.random() * 3 + 1 + 'px';
-        star.style.animationDelay = Math.random() * 3 + 's';
-        star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        star.style.width = star.style.height = (Math.random() * 2 + 1) + 'px';
+        star.style.animationDelay = Math.random() * 4 + 's';
+        star.style.animationDuration = (Math.random() * 2 + 3) + 's';
         starfield.appendChild(star);
       }
     });

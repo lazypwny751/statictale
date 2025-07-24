@@ -1,0 +1,26 @@
+title: StaticTale
+description: A clean file sharing platform for digital assets
+baseurl: ""
+url: "https://lazypwny751.github.io/statictale"
+
+markdown: kramdown
+highlighter: rouge
+plugins:
+  - jekyll-feed
+
+collections:
+  assets:
+    output: true
+    permalink: /:collection/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: "assets"
+    values:
+      layout: "asset"
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
