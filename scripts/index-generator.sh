@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ASCII Terminal Resource Indexer Script
-# Generates ls -la style directory listing
+# Generates ls -la style directory listing.
 
 RESOURCES_DIR="resources"
 OUTPUT_FILE="resources/context.html"
