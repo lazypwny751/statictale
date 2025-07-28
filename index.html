@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EFI Shell - Resource Explorer</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #000000;
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.2;
+            margin: 0;
+        }
+        
+        .ascii-header {
+            border: 1px solid #ffffff;
+            padding: 10px;
+            margin-bottom: 15px;
+            background-color: #000000;
+            text-align: center;
+        }
+        
+        .ascii-title {
+            font-size: 14px;
+            font-weight: normal;
+            margin-bottom: 5px;
+            color: #ffffff;
+        }
+        
+        .ascii-info {
+            font-size: 10px;
+            color: #cccccc;
+        }
+        
+        .terminal-prompt {
+            margin: 10px 0;
+            color: #ffffff;
+            font-size: 12px;
+        }
+        
+        .terminal-prompt::before {
+            content: "$ ";
+            color: #ffffff;
+        }
+        
+        .content-area {
+            border: 1px solid #ffffff;
+            padding: 15px;
+            background-color: #000000;
+            min-height: 300px;
+            font-size: 11px;
+        }
+        
+        .resource-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .resource-item {
+            margin: 2px 0;
+            padding: 1px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .resource-item:hover {
+            background-color: #222222;
+        }
+        
+        .resource-link {
+            color: #ffffff;
+            text-decoration: none;
+        }
+        
+        .resource-link:hover {
+            color: #cccccc;
+            text-decoration: underline;
+        }
+        
+        .directory {
+            color: #ffffff;
+            font-weight: normal;
+        }
+        
+        .file {
+            color: #ffffff;
+        }
+        
+        .size-info {
+            color: #cccccc;
+            font-size: 10px;
+            float: right;
+        }
+        
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            color: #999999;
+            font-size: 9px;
+            border-top: 1px solid #ffffff;
+            padding-top: 8px;
+        }
+        
+        .blinking-cursor {
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        .command-line {
+            background-color: #000000;
+            border: 1px solid #ffffff;
+            padding: 8px;
+            margin: 10px 0;
+            font-size: 11px;
+        }
+        
+        .status-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #000000;
+            border-top: 1px solid #ffffff;
+            padding: 3px 15px;
+            font-size: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <div class="ascii-header">
+        <div class="ascii-title">ASCII TERMINAL FILE BROWSER v1.0</div>
+        <div class="ascii-info">
+            System Ready | 80x25 Display | Monochrome Mode
+        </div>
+    </div>
+    
+    <div class="terminal-prompt">ls -la resources/</div>
+    
+    <div class="content-area" id="content-body">
+        <!-- Content will be loaded from resources/context.html -->
+        <div style="text-align: center; color: #666; margin: 50px 0;">
+            <div>Loading resources...</div>
+            <div class="blinking-cursor" style="display: inline;">_</div>
+        </div>
+    </div>
+    
+    <div class="command-line">
+        <span style="color: #ffffff;">terminal@localhost:~$</span> 
+        <span style="color: #ffffff;">cat resources.txt</span>
+        <span class="blinking-cursor">_</span>
+    </div>
+    
+    <div class="footer">
+        ASCII Terminal Browser | Auto-indexed | Last Update: <span id="last-update">--</span>
+    </div>
+    
+    <div class="status-bar">
+        <span>READY</span>
+        <span>CTRL+C: Break | CTRL+Z: Suspend | q: Quit</span>
+    </div>
+
+    <script>
+        // Load content from resources/context.html
+        async function loadContent() {
+            try {
+                const response = await fetch('resources/context.html');
+                if (response.ok) {
+                    const content = await response.text();
+                    document.getElementById('content-body').innerHTML = content;
+                } else {
+                    document.getElementById('content-body').innerHTML = `
+                        <div style="color: #ff0000;">
+                            Error: Could not load resources/context.html
+                            <br>Status: ${response.status}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                document.getElementById('content-body').innerHTML = `
+                    <div style="color: #ff0000;">
+                        Error: Failed to fetch resources/context.html
+                        <br>${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // Set last update time
+        document.getElementById('last-update').textContent = new Date().toLocaleString();
+
+        // Load content on page load
+        window.addEventListener('load', loadContent);
+
+        // ASCII Terminal keyboard interactions
+        document.addEventListener('keydown', function(e) {
+            if (e.key.toLowerCase() === 'q') {
+                e.preventDefault();
+                if (confirm('Quit terminal? [y/N]')) {
+                    window.close();
+                }
+            } else if (e.ctrlKey && e.key.toLowerCase() === 'c') {
+                e.preventDefault();
+                console.log('^C');
+                alert('^C');
+            } else if (e.ctrlKey && e.key.toLowerCase() === 'z') {
+                e.preventDefault();
+                alert('Process suspended');
+            }
+        });
+
+        // Add console-like typing effect (optional)
+        function typeWriter(element, text, speed = 50) {
+            let i = 0;
+            element.innerHTML = '';
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+    </script>
+</body>
+</html>

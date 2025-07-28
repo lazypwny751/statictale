@@ -1,0 +1,43 @@
+<div class="resource-index">
+    <div style="color: #ffffff; font-size: 12px; margin-bottom: 10px; font-family: 'Courier New', monospace;">
+        total 4
+    </div>
+    
+    <div style="color: #cccccc; margin-bottom: 15px; font-size: 10px;">
+        drwxr-xr-x 2 user user 4096 <span id="index-date">--</span> .
+    </div>
+    
+    <ul class="resource-list" id="resource-list">
+        <li class="resource-item">
+            <div class="directory">drwxr-xr-x  2 user user   4096 Jul 28 12:34 docs</div>
+        </li>
+        <li class="resource-item">
+            <a href="resources/example.txt" class="resource-link file">-rw-r--r--  1 user user   1024 Jul 28 12:35 example.txt</a>
+        </li>
+        <li class="resource-item">
+            <div class="directory">drwxr-xr-x  2 user user   4096 Jul 28 12:34 scripts</div>
+        </li>
+        <li class="resource-item">
+            <a href="resources/readme.md" class="resource-link file">-rw-r--r--  1 user user   2560 Jul 28 12:36 readme.md</a>
+        </li>
+    </ul>
+    
+    <div style="margin-top: 15px; color: #cccccc; font-size: 10px;">
+        <span id="file-count">2</span> files, <span id="dir-count">2</span> directories
+        <br>Last update: <span id="scan-time">--</span>
+    </div>
+</div>
+
+<script>
+    // Set timestamps in Unix format
+    const now = new Date();
+    const unixDate = now.toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: '2-digit', 
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: false 
+    });
+    document.getElementById('index-date').textContent = unixDate;
+    document.getElementById('scan-time').textContent = unixDate;
+</script>

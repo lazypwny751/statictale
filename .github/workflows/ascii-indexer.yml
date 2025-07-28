@@ -1,0 +1,49 @@
+name: ASCII Terminal Indexer
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'resources/**'
+      - '!resources/context.html'
+  workflow_dispatch:
+
+jobs:
+  index-resources:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0
+
+    - name: Make indexer executable
+      run: chmod +x scripts/index-generator.sh
+
+    - name: Run ASCII terminal indexer
+      run: ./scripts/index-generator.sh
+
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "ASCII Terminal Bot"
+        
+        if [ -n "$(git status --porcelain)" ]; then
+          git add resources/context.html
+          git commit -m "📟 Auto-update ASCII directory listing [skip ci]
+          
+          📊 Updated ls -la output
+          🕒 Generated: $(date '+%b %d %H:%M')
+          💻 ASCII terminal indexing complete"
+          
+          git push
+          echo "Process completed successfully"
+        else
+          echo "No changes detected"
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

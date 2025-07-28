@@ -1,0 +1,49 @@
+name: ASCII Terminal Indexer
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'resources/**'
+      - '!resources/context.html'
+  workflow_dispatch:
+
+jobs:
+  index-resources:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0
+
+    - name: Make indexer executable
+      run: chmod +x scripts/index-generator.sh
+
+    - name: Run DOS resource indexer
+      run: ./scripts/index-generator.sh
+
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "DOS Indexer Bot"
+        
+        if [ -n "$(git status --porcelain)" ]; then
+          git add resources/context.html
+          git commit -m "🖥️ Auto-update DOS resource index [skip ci]
+          
+          📊 Updated directory listing
+          🕒 Generated: $(date '+%m-%d-%Y %H:%M')
+          � MS-DOS style indexing complete"
+          
+          git push
+          echo "File(s) copied successfully"
+        else
+          echo "No files to copy"
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

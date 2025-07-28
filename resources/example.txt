@@ -1,0 +1,11 @@
+This is an example text file for testing the resource indexer.
+
+The EFI Shell Resource Explorer will automatically index this file and display it in the web interface.
+
+Content includes:
+- File size detection
+- Icon assignment based on file extension
+- Automatic timestamp updates
+- GitHub Actions integration
+
+This file should appear in the resource listing with a 📄 icon and proper size information.
