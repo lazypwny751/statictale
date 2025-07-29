@@ -101,5 +101,3 @@ Abort, Retry, Ignore, Fail? [A,R,I,F]: I
 File(s) copied successfully
 No files to copy
 ```
-
-Şimdi çok daha temiz! Script ayrı, workflow sadece script'i çağırıyor. DOS teması da authentic! �✨
